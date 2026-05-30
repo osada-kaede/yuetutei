@@ -1,0 +1,738 @@
+/* ==========================================================================
+   1. 共通設定 & リセット
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-ink: #0b0b0c;       /* 奥行きのある墨色 */
+    --color-amber: #e1cc8e;     /* スープの脂を象徴する琥珀色 */
+    --color-white: #ffffff;     /* 白抜き文字用 */
+    
+    --font-heading: 'Noto Serif JP', serif;
+    --font-body: 'Noto Sans JP', sans-serif;
+}
+
+html, body {
+    background-color: var(--color-ink);
+    color: var(--color-white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.8;
+    overflow-x: hidden;
+    /* JSの背景色変容を滑らかに表現するためのtransition */
+    transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Lenisスムーズスクロール用設定 */
+html.lenis {
+    height: auto;
+}
+.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+.lenis-smooth [data-lenis-prevent] {
+    overflow: clip;
+}
+.lenis-overflow {
+    overflow-y: scroll;
+}
+.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-amber);
+    letter-spacing: 0.3em;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+/* ==========================================================================
+   2. 沈降度インジケーター（グローバルナビゲーション）
+   ========================================================================== */
+.depth-indicator {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    /* 【追加】背景色に応じてインジケーターの色を自動反転させ、常に視認性を確保 */
+    mix-blend-mode: difference; 
+}
+
+.indicator-line {
+    position: relative;
+    width: 1px;
+    height: 300px;
+    /* 白ベースにしておくと、ブレンドモードで見やすくなります */
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.indicator-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 0%; /* JS連動 */
+    background-color: #ffffff; /* 白に統一（背景色との差分でエモい色に反転します） */
+}
+
+.indicator-markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.marker {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+    left: -6px;
+    display: flex;
+    align-items: center;
+}
+
+.marker::before {
+    content: '';
+    position: absolute;
+    left: 4.5px;
+    width: 3px;
+    height: 3px;
+    background-color: #ffffff; /* 白に統一 */
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.marker:hover::before {
+    transform: scale(2.5);
+}
+
+.marker::after {
+    content: attr(data-depth);
+    position: absolute;
+    right: 18px;
+    font-size: 9px;
+    font-family: var(--font-body);
+    color: #ffffff; /* 白に統一 */
+    opacity: 0.7;
+    white-space: nowrap;
+    letter-spacing: 0.05em;
+}
+
+.section-name {
+    position: absolute;
+    right: 55px;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    color: #ffffff; /* 白に統一 */
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateX(10px);
+}
+
+.marker:hover .section-name {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* ==========================================================================
+   3. 各セクションのスタイリング
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   ① Hero (FV)
+   -------------------------------------------------------------------------- */
+.section-hero {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-ink);
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-visual-pc {
+    width: 60%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hero-visual-pc .image-placeholder {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.75; /* 墨色と馴染ませる */
+}
+
+.hero-content {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 60px;
+    background-color: var(--color-ink);
+    z-index: 5;
+}
+
+.shop-name {
+    font-family: var(--font-heading);
+    font-size: 4.5rem;
+    font-weight: 700;
+    color: var(--color-amber);
+    letter-spacing: 0.4em;
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
+
+.catchphrase {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    line-height: 2.2;
+    letter-spacing: 0.2em;
+    color: var(--color-white);
+}
+
+/* スマホ用ビジュアルはPCでは完全隠蔽 */
+.hero-visual-sp {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   ② Concept
+   -------------------------------------------------------------------------- */
+.section-concept {
+    padding: 160px 0;
+    background-color: transparent; /* 背景色変容の透過用 */
+}
+
+.concept-layout {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.concept-text {
+    width: 50%;
+}
+
+.concept-text p {
+    font-size: 1.05rem;
+    line-height: 2.2;
+    margin-bottom: 30px;
+    text-align: justify;
+    letter-spacing: 0.05em;
+}
+
+.concept-text p:last-child {
+    margin-bottom: 0;
+    color: var(--color-amber);
+    font-weight: 700;
+}
+
+.concept-diagram-box {
+    width: 50%;
+}
+
+.concept-diagram-img {
+    width: 100%;
+    height: auto;
+    border: 1px solid rgba(225, 204, 142, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   ③ Experience
+   -------------------------------------------------------------------------- */
+.section-experience {
+    background-color: transparent;
+}
+
+/* 「味覚の沈降」見出し：位置と余白の微調整 */
+.section-experience .section-title {
+    mix-blend-mode: difference;
+    color: #ffffff;
+    position: relative;
+    z-index: 5;
+    margin-bottom: 40px; /* カードとの距離を少し詰めて引き締める */
+}
+
+.experience-trigger {
+    min-height: 65vh; /* 【修正】90vhから65vhに縮小し、スカスカな空白と間を劇的に詰める */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;   /* 【修正】上下の無駄な余白をカット */
+}
+
+/* 解説カード：圧倒的な存在感を持たせるため、サイズとフォントを一回り巨大化 */
+.experience-card {
+    background-color: rgba(11, 11, 12, 0.94); /* 墨色の重みを増すため、わずかに不透明度をアップ */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 80px 100px; /* 【修正】内側の余白を広げ、カード自体の重厚感と肉厚感をアップ */
+    max-width: 960px;    /* 【修正】720pxから960pxへ拡張、大画面でも寂しく見えないサイズへ */
+    width: 95%;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+}
+
+.phase-number {
+    display: block;
+    font-size: 1.05rem; /* 【修正】少し大きく */
+    color: var(--color-amber);
+    letter-spacing: 0.4em; /* 文字の間隔をさらに広げて格式高く */
+    margin-bottom: 25px;
+}
+
+.experience-card h3 {
+    font-family: var(--font-heading);
+    font-size: 2.6rem; /* 【修正】2.0remから2.6remへ巨大化。視線を一瞬で奪う見出しに */
+    letter-spacing: 0.2em;
+    margin-bottom: 35px;
+    color: var(--color-white);
+}
+
+.experience-card p {
+    font-size: 1.15rem; /* 【修正】1.0remから1.15remへ視認性を向上 */
+    line-height: 2.3;    /* 行間をゆったりと取って、可読性と高級感を両立 */
+    color: rgba(255, 255, 255, 0.9);
+    text-align: justify;
+    text-justify: inter-character;
+}
+
+/* スマホ版（レスポンシブ）でのサイズ崩れを防ぐ安全装置 */
+@media screen and (max-width: 768px) {
+    .experience-trigger {
+        min-height: auto;
+        padding: 40px 0;
+    }
+    .experience-card {
+        padding: 45px 24px;
+        max-width: 100%;
+    }
+    .experience-card h3 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+    .experience-card p {
+        font-size: 0.95rem;
+        line-height: 2;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   ④ Ingredients
+   -------------------------------------------------------------------------- */
+.section-ingredients {
+    padding: 160px 0;
+    background-color: transparent;
+}
+
+.ingredients-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+}
+
+.ingredient-item {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.ingredient-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.macro-photo-placeholder {
+    width: 50%;
+    height: 380px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 15px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 代替テキストは画像が読み込まれなかった時用に見えなくしておく */
+.macro-photo-placeholder span {
+    display: none;
+}
+
+.ingredient-info {
+    width: 50%;
+}
+
+.ingredient-info h3 {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    color: var(--color-amber);
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+}
+
+.ingredient-info p {
+    font-size: 1rem;
+    line-height: 2;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   ⑤ Philosophy
+   -------------------------------------------------------------------------- */
+.section-philosophy {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-ink) !important; /* 完全な闇を強制 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 140px 0;
+    position: relative;
+    z-index: 10;
+}
+
+.philosophy-container {
+    width: auto;
+}
+
+.philosophy-text-wrapper {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.philosophy-line {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    letter-spacing: 0.35em;
+    line-height: 3.2;
+    margin-left: 2.8rem;
+}
+
+.philosophy-line-author {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    margin-top: 50px;
+    align-self: flex-end;
+    color: var(--color-amber);
+}
+
+/* --------------------------------------------------------------------------
+   ⑥ Information
+   -------------------------------------------------------------------------- */
+.section-information {
+    padding: 160px 0 60px 0;
+    background-color: var(--color-ink);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* 実在への帰還：硬質なゴシック指定 */
+.section-information .section-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+}
+
+.info-layout {
+    display: flex;
+    gap: 80px;
+    margin-bottom: 120px;
+}
+
+.info-meta, .info-map-box {
+    width: 50%;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 45px;
+}
+
+.info-table th, .info-table td {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.info-table th {
+    color: var(--color-amber);
+    width: 30%;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.info-table td {
+    color: rgba(255,255,255,0.9);
+}
+
+.sns-links {
+    display: flex;
+    gap: 40px;
+}
+
+.sns-link {
+    color: var(--color-white);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--color-white);
+    padding-bottom: 5px;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.sns-link:hover {
+    color: var(--color-amber);
+    border-color: var(--color-amber);
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    background-color: #131315;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+
+.site-footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.site-footer p {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   4. スマートフォン対応（モバイル没入レイヤー構造）
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 0 24px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 45px;
+    }
+
+    /* 没入・誤タッチ防止のためインジケーター排除 */
+    .depth-indicator {
+        display: none;
+    }
+
+    /* ① Hero スマホ専用：全画面レイヤー重ね構造 */
+    .section-hero {
+        flex-direction: column;
+    }
+
+    .hero-visual-pc {
+        display: none;
+    }
+
+    .hero-visual-sp {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0.45; /* 文字を浮き上がらせるための不透明度 */
+        z-index: 1;
+    }
+
+    .hero-content {
+        width: 100%;
+        height: 100vh;
+        padding-left: 0;
+        justify-content: center;
+        text-align: center;
+        background-color: transparent;
+        z-index: 2;
+    }
+
+    .shop-name {
+        font-size: 3.5rem;
+        padding-left: 0.4em; /* トラッキングのセンター調整 */
+    }
+
+    .catchphrase {
+        font-size: 1.15rem;
+    }
+
+    /* ② Concept */
+    .section-concept {
+        padding: 100px 0;
+    }
+
+    .concept-layout {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .concept-text, .concept-diagram-box {
+        width: 100%;
+    }
+
+    /* ③ Experience */
+    .experience-trigger {
+        min-height: 80vh;
+        padding: 80px 0;
+    }
+
+    .experience-card {
+        padding: 45px 24px;
+    }
+
+    .experience-card h3 {
+        font-size: 1.5rem;
+    }
+
+    /* ④ Ingredients */
+    .section-ingredients {
+        padding: 100px 0;
+    }
+
+    .ingredients-grid {
+        gap: 70px;
+    }
+
+    .ingredient-item, .ingredient-item:nth-child(even) {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .macro-photo-placeholder, .ingredient-info {
+        width: 100%;
+    }
+
+    .macro-photo-placeholder {
+        height: 260px;
+    }
+
+/* ⑤ Philosophy スマホ専用：右側への突き抜け・崩れを完全リセット */
+    .section-philosophy {
+        height: auto;
+        padding: 100px 0;
+        overflow: visible;
+        display: block;
+    }
+
+    .philosophy-text-wrapper {
+        writing-mode: horizontal-tb; /* スマホでは横書き */
+        width: 85%;                  /* 画面の左右に均等な15%のセーフティマージンを確保 */
+        height: auto;
+        margin: 0 auto !important;   /* 強制的に画面の水平中央に配置 */
+        display: flex;
+        flex-direction: column;
+        gap: 24px;                   /* 行同士の心地よい間隔 */
+        align-items: center;
+        justify-content: center;
+        text-align: center;          /* テキスト自体も中央揃えに */
+    }
+
+    /* 全ての行のPC用スタイル（右寄りマージン）を完全に引き剥がす */
+    .philosophy-line {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin-left: 0 !important;   /* 【重要】PC版の右寄りマージン（2.8rem）を完全抹殺 */
+        padding: 0 !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        font-size: 1.05rem;          /* スマホで1行がはみ出さない絶妙なサイズ */
+        line-height: 2;
+        letter-spacing: 0.12em;      /* 文字間隔をスマホ用に少し引き締め、右はみ出しを防止 */
+        color: var(--color-white);
+        word-break: break-all;       /* 万が一の単語の突き抜けも自動改行で防ぐ */
+    }
+
+    /* 作者名（店主 大岩）も中央に綺麗に収める */
+    .philosophy-line-author {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin-left: 0 !important;   /* 右寄りマージンをリセット */
+        margin-top: 16px;            /* 本文との間に少し隙間を空ける */
+        opacity: 1 !important;
+        visibility: visible !important;
+        font-size: 0.95rem;
+        letter-spacing: 0.1em;
+        color: var(--color-amber);
+        text-align: center;          /* 右下固定を解除し、スマホでは中央揃えに */
+        align-self: center;          /* flexボックス内での中央寄せ */
+    }
+
+    /* ⑥ Information */
+    .section-information {
+        padding: 100px 0 40px 0;
+    }
+
+    .info-layout {
+        flex-direction: column;
+        gap: 50px;
+        margin-bottom: 60px;
+    }
+
+    .info-meta, .info-map-box {
+        width: 100%;
+    }
+
+    .info-table th {
+        width: 35%;
+    }
+
+    .map-placeholder {
+        min-height: 260px;
+    }
+}

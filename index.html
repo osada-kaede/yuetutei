@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愉悦亭 公式コンセプトサイト</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="depth-indicator">
+        <div class="indicator-line">
+            <div class="indicator-progress"></div>
+        </div>
+        <div class="indicator-markers">
+            <button class="marker" data-target="#hero" data-depth="0m"><span class="section-name">第一相（起点）</span></button>
+            <button class="marker" data-target="#concept" data-depth="100m"><span class="section-name">構造</span></button>
+            <button class="marker" data-target="#experience" data-depth="500m"><span class="section-name">変容</span></button>
+            <button class="marker" data-target="#information" data-depth="1000m"><span class="section-name">店舗情報</span></button>
+        </div>
+    </nav>
+
+    <main>
+        
+        <section id="hero" class="section-hero">
+            <div class="hero-visual-pc">
+                <div class="image-placeholder" style="background-image: url('images/ramen-image-pc.png');"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-brand">
+                    <h1 class="shop-name">愉悦亭</h1>
+                    <p class="catchphrase">食べることは、<br>愉悦である。</p>
+                </div>
+            </div>
+            <div class="hero-visual-sp" style="background-image: url('images/ramen-image-ios.png');"></div>
+        </section>
+
+        <section id="concept" class="section-concept">
+            <div class="container">
+                <h2 class="section-title">二相構造</h2>
+                <div class="concept-layout">
+                    <div class="concept-text">
+                        <p>看板メニュー「二相楽麺」は、器に沿って潜む重厚な下層（豚骨ペースト）と、それを満たす清澄な上層（魚介）の立体的な二相構造からなる。</p>
+                        <p>混ぜずに啜るか、底から揺り動かすか。すべては器と対峙する者の悦びに委ねられている。</p>
+                    </div>
+                    <div class="concept-diagram-box">
+                        <img src="images/dammnenn-image.png" alt="二相楽麺 立体断面図" class="concept-diagram-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="section-experience">
+            <div class="container">
+                <h2 class="section-title">味覚の沈降</h2>
+                
+                <div class="experience-trigger" id="phase1" data-color="#e1cc8e">
+                    <div class="experience-card">
+                        <span class="phase-number">第一相</span>
+                        <h3>清澄なる魚介の薫り</h3>
+                        <p>スープの表面に浮かぶ上質な脂の層。まずは器に口をつけ、澄んだ魚介スープのシャープな旨味と、官能的な琥珀色の脂の融合を愉しむ。</p>
+                    </div>
+                </div>
+
+                <div class="experience-trigger" id="phase2" data-color="#8c6335">
+                    <div class="experience-card">
+                        <span class="phase-number">第二相</span>
+                        <h3>混沌への境界</h3>
+                        <p>箸を進めるにつれ、器の底と側面に潜んでいた濃厚な豚骨ペーストが溶け出し、清澄なスープを侵食し始める。魚介と豚骨が混ざり合い、味が濁り、トーンが落ちていく。</p>
+                    </div>
+                </div>
+
+                <div class="experience-trigger" id="phase3" data-color="#70614e">
+                    <div class="experience-card">
+                        <span class="phase-number">第三相</span>
+                        <h3>深淵のドロリ</h3>
+                        <p>完全に深淵へと至る。スープの底に沈殿した、グレーがかった泥褐色の濃厚ペーストが全体を支配し、ドロリとした不穏なまでの重量感が、脳内の食欲を極限まで狂わせる。</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="ingredients" class="section-ingredients">
+            <div class="container">
+                <h2 class="section-title">厳選の狂気</h2>
+                <div class="ingredients-grid">
+                    <div class="ingredient-item">
+                        <div class="macro-photo-placeholder" style="background-image: url('images/buta-image.png');"><span>【チャーシュー超接写】</span></div>
+                        <div class="ingredient-info">
+                            <h3>大ぶりな照り</h3>
+                            <p>スープの脂と共鳴し、圧倒的な照りを放つ厚切り肉。肉の繊維の奥まで不穏な旨味が染み込んでいる。</p>
+                        </div>
+                    </div>
+                    <div class="ingredient-item">
+                        <div class="macro-photo-placeholder" style="background-image: url('images/ajitama-image.png');"><span>【味玉超接写】</span></div>
+                        <div class="ingredient-info">
+                            <h3>琥珀の滴り</h3>
+                            <p>中心まで完璧にねっとりと仕上げられた割れ目から、琥珀色の濃厚な黄身がどろりと溢れ出す。</p>
+                        </div>
+                    </div>
+                    <div class="ingredient-item">
+                        <div class="macro-photo-placeholder" style="background-image: url('images/men-image.png');"><span>【麺超接写】</span></div>
+                        <div class="ingredient-info">
+                            <h3>深淵を絡め取る重厚麺</h3>
+                            <p>泥褐色のスープを極限まで引き上げるために設計された、手揉みの極太縮れ麺。強靭な歯ごたえが食欲を刺激する。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophy" class="section-philosophy">
+            <div class="philosophy-container">
+                <div class="philosophy-text-wrapper">
+                    <p class="philosophy-line">食べることは、すなわち深淵への沈降であり、</p>
+                    <p class="philosophy-line">味覚の変容に身を委ねる、一種の「異常性」である。</p>
+                    <p class="philosophy-line">日常の光を遮断した、深夜の大國天国の片隅で、</p>
+                    <p class="philosophy-line">ただ純粋なる食欲の奴隷となる愉悦を、私は提供し続ける。</p>
+                    <p class="philosophy-line-author">店主  大岩悪笑</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="information" class="section-information">
+            <div class="container">
+                <h2 class="section-title">実在への帰還</h2>
+                <div class="info-layout">
+                    <div class="info-meta">
+                        <table class="info-table">
+                            <tr>
+                                <th>営業時間</th>
+                                <td>22:00 〜 翌4:00（深夜のみ営業）</td>
+                            </tr>
+                            <tr>
+                                <th>定休日</th>
+                                <td>水曜日・不条理な日</td>
+                            </tr>
+                            <tr>
+                                <th>所在地</th>
+                                <td>大國天国</td>
+                            </tr>
+                        </table>
+                        <div class="sns-links">
+                            <a href="#" class="sns-link">X (Twitter)</a>
+                            <a href="#" class="sns-link">Instagram</a>
+                        </div>
+                    </div>
+                    <div class="info-map-box">
+                        <div class="map-placeholder">
+                            <span>【アクセスマップ プレースホルダー】</span>
+                        </div>
+                    </div>
+                </div>
+                <footer class="site-footer">
+                    <p>&copy; 2026 愉悦亭 公式コンセプトサイト. All Rights Reserved.</p>
+                </footer>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
